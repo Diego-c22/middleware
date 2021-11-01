@@ -58,10 +58,18 @@ class DataBase:
 
         try:
             self.cursor.execute(sql)
-            user = self.cursor.fetchone()
-            print(user)
+            item = self.cursor.fetchone()
+            print(item)
+            return item
         except:
             print("error en ")
+
+    def select_all(self, table):
+        sql = f"SELECT * FROM {table}"
+        self.cursor.execute(sql)
+        items = self.cursor.fetchall()
+        print(items)
+        return items
 
 
 print(Attempt.attempt)
