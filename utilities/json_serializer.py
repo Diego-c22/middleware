@@ -3,7 +3,7 @@ from decimal import Decimal
 
 def decimal_json_array(array):
     for index, item in enumerate(array):
-        obj = item.array()
+        obj = item.items()
         for key, value in obj:
             print(type(value))
             print(value)
