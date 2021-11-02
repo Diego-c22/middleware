@@ -1,9 +1,132 @@
 from flask import Blueprint
-from flask_restful import Api, Resource, abort, reqparse
+from db.db import DataBase
+from flask_restful import Resource, Api, abort, reqparse
 
 users_v1 = Blueprint("users_v1", __name__)
 api = Api(users_v1)
 
 
 class UsersResource(Resource):
-    pass
+    def get(self, table):
+        try:
+            db = DataBase()
+            response = db.select_all(table)
+            return response, 200
+        except:
+            abort(404, message="No se encontraron elementos")
+
+    def post(self, table):
+
+        if table == "tipodeusuarios":
+            abort(401, message="No tiene autorizacion para agregar ese elemento")
+        if table == "usuarios":
+            args = arguments.parse_args()
+
+            db = DataBase()
+            print("im inside")
+            r = db.insert_element(table, **args)
+
+            try:
+                return r
+            except:
+                abort(404)
+
+
+arguments = reqparse.RequestParser()
+arguments.add_argument(
+    "Nombre", type=str, help="Este campo es obligatorio", required=True
+)
+arguments.add_argument(
+    "Apellido", type=str, help="Este campo es obligatorio", required=True
+)
+arguments.add_argument(
+    "Correo", type=str, help="Este campo es obligatorio", required=True
+)
+arguments.add_argument(
+    "NombreUsuario", type=str, help="Este campo es obligatorio", required=True
+)
+arguments.add_argument(
+    "Contrasena", type=str, help="Este campo es obligatorio", required=True
+)
+arguments.add_argument(
+    "Imagen", type=str, help="Este campo es obligatorio", required=True
+)
+arguments.add_argument(
+    "IdTipoUsuario", type=int, help="Este campo es obligatorio", required=True
+)
+api.add_resource(UsersResource, "/middleware/usuario/<string:table>/")
+
+
+class UsersResourceDetail(Resource):
+    def get(self, table, id):
+        try:
+            db = DataBase()
+            if table == "usuarios":
+                response = db.select_detail(table, "idusuario", id)
+                return response, 200
+
+            if table == "tipodeusuarios":
+                response = db.select_detail(table, "idtipousuario", id)
+                return response, 200
+
+            abort(404, message="No se encontro el elemento")
+        except:
+            abort(500, message="Sucedio un error al intentar establecer la conexion")
+
+    def patch(self, table, id):
+
+        if table == "tipodeusuarios":
+            abort(401, message="No tiene autorizacion para actualizar ese elemento")
+        if table == "usuarios":
+            args = arguments_update.parse_args()
+
+            db = DataBase()
+            print("im inside")
+            r = db.update_element(table, "IdUsuario", id, **args)
+
+            try:
+                return r
+            except:
+                abort(404)
+
+
+arguments_update = reqparse.RequestParser()
+arguments_update.add_argument(
+    "Nombre", type=str, help="Este campo es obligatorio", required=False
+)
+arguments_update.add_argument(
+    "Apellido", type=str, help="Este campo es obligatorio", required=False
+)
+arguments_update.add_argument(
+    "Correo", type=str, help="Este campo es obligatorio", required=False
+)
+arguments_update.add_argument(
+    "NombreUsuario", type=str, help="Este campo es obligatorio", required=False
+)
+arguments_update.add_argument(
+    "Contrasena", type=str, help="Este campo es obligatorio", required=False
+)
+arguments_update.add_argument(
+    "Imagen", type=str, help="Este campo es obligatorio", required=False
+)
+arguments_update.add_argument(
+    "IdTipoUsuario", type=int, help="Este campo es obligatorio", required=False
+)
+api.add_resource(UsersResourceDetail,
+                 "/middleware/usuario/<string:table>/<int:id>/")
+
+
+class UsersNameResourceDetail(Resource):
+    def get(self, username):
+        try:
+            db = DataBase()
+
+            response = db.select_detail("usuarios", "NombreUsuario", username)
+            return response, 200
+
+        except:
+            abort(500, message="Sucedio un error al intentar establecer la conexion")
+
+
+api.add_resource(UsersNameResourceDetail,
+                 "/middleware/usuario/usuarios/u/<string:username>/")

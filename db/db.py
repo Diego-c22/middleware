@@ -54,7 +54,8 @@ class DataBase:
         )
 
     def select_detail(self, table, param, id):
-        sql = f"SELECT * FROM {table} where {param}={id}"
+        sql = f'SELECT * FROM {table} where {param}="{id}"'
+        print(sql)
 
         try:
             self.cursor.execute(sql)
@@ -64,12 +65,66 @@ class DataBase:
         except:
             print("error en ")
 
+        self.connection.close()
+
     def select_all(self, table):
         sql = f"SELECT * FROM {table}"
         self.cursor.execute(sql)
         items = self.cursor.fetchall()
         print(items)
+        self.connection.close()
         return items
+
+    def insert_element(self, table, **kwargs):
+        print("im in create")
+        keys = kwargs.keys()
+        values = kwargs.values()
+        fields = ""
+        data = ""
+        for key in keys:
+            fields += f"{key},"
+
+        for value in values:
+            data += f'"{value}",'
+
+        fields = fields[:-1]
+        data = data[:-1]
+        sql = f"INSERT INTO {table}({fields}) VALUES({data})"
+
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.connection.commit()
+            item = self.cursor.fetchone()
+            print(item)
+            return item
+        except Exception as e:
+            print(e)
+
+        self.connection.close()
+
+    def update_element(self, table, field, id, **kwargs):
+        print("im in create")
+        items = kwargs.items()
+        fields = ""
+        for key, value in items:
+            if value:
+                fields += f'{key}="{value}",'
+
+        fields = fields[:-1]
+        sql = f"UPDATE {table} SET {fields} WHERE {field}={id}"
+
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.connection.commit()
+            item = self.cursor.fetchone()
+            print(item)
+            return item
+        except Exception as e:
+            print(e)
+
+        self.connection.close()
 
 
 print(Attempt.attempt)
