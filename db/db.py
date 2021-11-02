@@ -1,9 +1,8 @@
 """Manage Data base connection"""
-
 import pymysql
-from pymysql import cursors
 from pymysql.err import OperationalError
 from common.config import DATABASES
+from utilities.json_serializer import decimal_json_array
 
 
 class Attempt:
@@ -73,7 +72,7 @@ class DataBase:
         sql = f"SELECT * FROM {table}"
         self.cursor.execute(sql)
         items = self.cursor.fetchall()
-        print(items)
+        items = decimal_json_array(items)
         self.connection.close()
         return items
 
@@ -102,6 +101,7 @@ class DataBase:
                 f'SELECT * FROM {table} WHERE Id{table[:-1].title()}={id}')
             item = self.cursor.fetchone()
             self.connection.commit()
+
             print(item)
             return item
         except Exception as e:
@@ -147,6 +147,3 @@ class DataBase:
             print("error en ")
 
         self.connection.close()
-
-
-print(Attempt.attempt)

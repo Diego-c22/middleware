@@ -89,6 +89,20 @@ class UsersResourceDetail(Resource):
             except:
                 abort(404)
 
+    def delete(self, table, id):
+        if table == "tipodeusuarios":
+            abort(401, message="No tiene autorizacion para eliminar ese elemento")
+        if table == "usuarios":
+
+            db = DataBase()
+            print("im inside")
+            r = db.delete_element(table, "IdUsuario", id)
+
+            try:
+                return r
+            except:
+                abort(404)
+
 
 arguments_update = reqparse.RequestParser()
 arguments_update.add_argument(
