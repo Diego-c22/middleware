@@ -1,6 +1,7 @@
 """Manage Data base connection"""
 
 import pymysql
+from pymysql import cursors
 from pymysql.err import OperationalError
 from common.config import DATABASES
 
@@ -51,6 +52,7 @@ class DataBase:
             db=DATABASES[databases[Attempt.attempt]]["db"],
             user=DATABASES[databases[Attempt.attempt]]["user"],
             password=DATABASES[databases[Attempt.attempt]]["password"],
+            cursorclass=pymysql.cursors.DictCursor
         )
 
     def select_detail(self, table, param, id):
@@ -94,8 +96,12 @@ class DataBase:
         print(sql)
         try:
             self.cursor.execute(sql)
-            self.connection.commit()
+
+            id = self.cursor.lastrowid
+            self.cursor.execute(
+                f'SELECT * FROM {table} WHERE Id{table[:-1].title()}={id}')
             item = self.cursor.fetchone()
+            self.connection.commit()
             print(item)
             return item
         except Exception as e:
@@ -117,12 +123,28 @@ class DataBase:
         print(sql)
         try:
             self.cursor.execute(sql)
+            self.cursor.execute(f'SELECT * FROM {table} WHERE {field}={id}')
             self.connection.commit()
             item = self.cursor.fetchone()
             print(item)
             return item
         except Exception as e:
             print(e)
+
+        self.connection.close()
+
+    def delete_element(self, table, param, id):
+        sql = f'DELETE FROM {table} WHERE {param}="{id}"'
+        print(sql)
+
+        try:
+            self.cursor.execute(sql)
+            item = self.cursor.fetchone()
+            print(item)
+            self.connection.commit()
+            return item
+        except:
+            print("error en ")
 
         self.connection.close()
 
