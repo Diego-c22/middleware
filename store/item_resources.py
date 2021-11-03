@@ -9,14 +9,10 @@ api = Api(items_v1)
 
 class ItemResource(Resource):
     def get(self):
-        try:
-            db = DataBase()
-            response = db.select_all("Articulos")
-            print(response)
-            return response, 200
-        except Exception as e:
-            raise e
-            abort(404, message="No se encontraron elementos")
+        db = DataBase()
+        response = db.select_all("Articulos")
+        print(response)
+        return response, 200
 
     def post(self):
         args = arguments.parse_args()
@@ -79,4 +75,4 @@ arguments_update.add_argument('Descripcion', type=str,
 arguments_update.add_argument('IdAlmacenista', type=int,
                               help="Este campo es obligatorio", required=False)
 
-api.add_resource(ItemResourceDetail, "/middleware/tienda/articulos/<int:id>")
+api.add_resource(ItemResourceDetail, "/middleware/tienda/articulos/<int:id>/")

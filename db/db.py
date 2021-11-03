@@ -69,13 +69,28 @@ class DataBase:
 
         self.connection.close()
 
+    def select_field(self, table, param, id):
+        sql = f'SELECT * FROM {table} where {param}="{id}"'
+        print(sql)
+
+        try:
+            self.cursor.execute(sql)
+            item = self.cursor.fetchall()
+            item = decimal_json_array(item)
+            print(item)
+            return {'data': item}
+        except:
+            print("error en ")
+
+        self.connection.close()
+
     def select_all(self, table):
         sql = f"SELECT * FROM {table}"
         self.cursor.execute(sql)
         items = self.cursor.fetchall()
         items = decimal_json_array(items)
         self.connection.close()
-        return items
+        return {'data': items}
 
     def insert_element(self, table, pk, **kwargs):
         print("im in create")
@@ -140,11 +155,9 @@ class DataBase:
 
         try:
             self.cursor.execute(sql)
-            item = self.cursor.fetchone()
-            print(item)
             self.connection.commit()
-            return item
-        except:
-            print("error en ")
+            return {"message": "El elemento se elimino correctamente"}
+        except Exception as e:
+            raise e
 
         self.connection.close()

@@ -9,14 +9,10 @@ api = Api(solditems_v1)
 
 class SoldItemsResource(Resource):
     def get(self):
-        try:
-            db = DataBase()
-            response = db.select_all("Articuloscomprados")
-            print(response)
-            return response, 200
-        except Exception as e:
-            raise e
-            abort(404, message="No se encontraron elementos")
+        db = DataBase()
+        response = db.select_all("Articuloscomprados")
+        print(response)
+        return response, 200
 
     def post(self):
         args = arguments.parse_args()
@@ -69,4 +65,4 @@ arguments_update.add_argument(
 
 
 api.add_resource(SoldItemsResourceDetail,
-                 "/middleware/tienda/articulos_comprados/<int:id>")
+                 "/middleware/tienda/articulos_comprados/<int:id>/")

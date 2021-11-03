@@ -9,14 +9,10 @@ api = Api(return_v1)
 
 class ReturnResource(Resource):
     def get(self):
-        try:
-            db = DataBase()
-            response = db.select_all("Devoluciones")
-            print(response)
-            return response, 200
-        except Exception as e:
-            raise e
-            abort(404, message="No se encontraron elementos")
+        db = DataBase()
+        response = db.select_all("Devoluciones")
+        print(response)
+        return response, 200
 
     def post(self):
         args = arguments.parse_args()
@@ -63,4 +59,4 @@ arguments_update.add_argument(
 
 
 api.add_resource(ReturnResourceDetail,
-                 "/middleware/tienda/devoluciones/<int:id>")
+                 "/middleware/tienda/devoluciones/<int:id>/")

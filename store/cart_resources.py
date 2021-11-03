@@ -69,4 +69,4 @@ arguments_update.add_argument('IdUsuario', type=int,
                               help="Este campo es obligatorio", required=False)
 
 
-api.add_resource(CartResourceDetail, "/middleware/tienda/carritos/<int:id>")
+api.add_resource(CartResourceDetail, "/middleware/tienda/carritos/<int:id>/")

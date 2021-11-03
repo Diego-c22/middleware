@@ -21,7 +21,7 @@ class PurchaseResource(Resource):
     def post(self):
         args = arguments.parse_args()
         db = DataBase()
-        response = db.insert_element("Compras", "IdCompras" ** args)
+        response = db.insert_element("Compras", "IdCompra", **args)
         print(response)
         return response, 200
 
@@ -70,3 +70,15 @@ arguments_update.add_argument('IdUsuario', type=int,
 
 
 api.add_resource(PurchaseResourceDetail, "/middleware/tienda/compras/<int:id>")
+
+
+class PurchaseUserResource(Resource):
+    def get(self, id):
+        db = DataBase()
+        response = db.select_field("Compras", "IdUsuario", id)
+        print(response)
+        return response, 200
+
+
+api.add_resource(PurchaseUserResource,
+                 "/middleware/tienda/compras/u/<int:id>/")
