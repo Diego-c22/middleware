@@ -1,7 +1,7 @@
-"""Resources to connect with articuloscomprados model"""
+"""Resources to connect to articuloscomprados model"""
 from flask import Blueprint
 from db.db import DataBase
-from flask_restful import Resource, Api, abort, reqparse
+from flask_restful import Resource, Api, reqparse
 
 solditems_v1 = Blueprint("solditems_v1", __name__)
 api = Api(solditems_v1)
@@ -11,7 +11,6 @@ class SoldItemsResource(Resource):
     def get(self):
         db = DataBase()
         response = db.select_all("Articuloscomprados")
-        print(response)
         return response, 200
 
     def post(self):

@@ -1,7 +1,7 @@
 """Resources to connect to Devoluciones model"""
 from flask import Blueprint
 from db.db import DataBase
-from flask_restful import Resource, Api, abort, reqparse
+from flask_restful import Resource, Api, reqparse
 
 return_v1 = Blueprint("return_v1", __name__)
 api = Api(return_v1)
@@ -11,14 +11,12 @@ class ReturnResource(Resource):
     def get(self):
         db = DataBase()
         response = db.select_all("Devoluciones")
-        print(response)
         return response, 200
 
     def post(self):
         args = arguments.parse_args()
         db = DataBase()
         response = db.insert_element("Devoluciones", "IdDevolucion", ** args)
-        print(response)
         return response, 200
 
 

@@ -1,3 +1,5 @@
+"""Resources to connect to Users and TipodeUsuarios Models"""
+
 from flask import Blueprint
 from db.db import DataBase
 from flask_restful import Resource, Api, abort, reqparse
@@ -8,12 +10,9 @@ api = Api(users_v1)
 
 class UsersResource(Resource):
     def get(self, table):
-        try:
-            db = DataBase()
-            response = db.select_all(table)
-            return response, 200
-        except:
-            abort(404, message="No se encontraron elementos")
+        db = DataBase()
+        response = db.select_all(table)
+        return response, 200
 
     def post(self, table):
 
@@ -21,15 +20,12 @@ class UsersResource(Resource):
             abort(401, message="No tiene autorizacion para agregar ese elemento")
         if table == "usuarios":
             args = arguments.parse_args()
-
             db = DataBase()
             print("im inside")
             r = db.insert_element(table, "IdUsuario", **args)
 
-            try:
-                return r
-            except:
-                abort(404)
+            return r
+        abort(404)
 
 
 arguments = reqparse.RequestParser()
@@ -59,19 +55,16 @@ api.add_resource(UsersResource, "/middleware/usuario/<string:table>/")
 
 class UsersResourceDetail(Resource):
     def get(self, table, id):
-        try:
-            db = DataBase()
-            if table == "usuarios":
-                response = db.select_detail(table, "idusuario", id)
-                return response, 200
+        db = DataBase()
+        if table == "usuarios":
+            response = db.select_detail(table, "idusuario", id)
+            return response, 200
 
-            if table == "tipodeusuarios":
-                response = db.select_detail(table, "idtipousuario", id)
-                return response, 200
+        if table == "tipodeusuarios":
+            response = db.select_detail(table, "idtipousuario", id)
+            return response, 200
 
-            abort(404, message="No se encontro el elemento")
-        except:
-            abort(500, message="Sucedio un error al intentar establecer la conexion")
+        abort(404, message="No se encontro el elemento")
 
     def patch(self, table, id):
 
@@ -79,29 +72,23 @@ class UsersResourceDetail(Resource):
             abort(401, message="No tiene autorizacion para actualizar ese elemento")
         if table == "usuarios":
             args = arguments_update.parse_args()
-
             db = DataBase()
-            print("im inside")
             r = db.update_element(table, "IdUsuario", id, **args)
 
-            try:
-                return r
-            except:
-                abort(404)
+            return r
+
+        abort(404)
 
     def delete(self, table, id):
         if table == "tipodeusuarios":
             abort(401, message="No tiene autorizacion para eliminar ese elemento")
         if table == "usuarios":
-
             db = DataBase()
             print("im inside")
             r = db.delete_element(table, "IdUsuario", id)
 
-            try:
-                return r
-            except:
-                abort(404)
+            return r
+        abort(404)
 
 
 arguments_update = reqparse.RequestParser()
@@ -132,14 +119,9 @@ api.add_resource(UsersResourceDetail,
 
 class UsersNameResourceDetail(Resource):
     def get(self, username):
-        try:
-            db = DataBase()
-
-            response = db.select_detail("usuarios", "NombreUsuario", username)
-            return response, 200
-
-        except:
-            abort(500, message="Sucedio un error al intentar establecer la conexion")
+        db = DataBase()
+        response = db.select_detail("usuarios", "NombreUsuario", username)
+        return response, 200
 
 
 api.add_resource(UsersNameResourceDetail,

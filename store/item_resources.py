@@ -1,4 +1,4 @@
-
+"""Resources to connect to Articulos model"""
 from flask import Blueprint
 from db.db import DataBase
 from flask_restful import Resource, Api, abort, reqparse

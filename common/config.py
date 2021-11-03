@@ -1,4 +1,4 @@
-ATTEMPT = 0
+"""Main Project Configurations"""
 
 DATABASES = {
     "default": {

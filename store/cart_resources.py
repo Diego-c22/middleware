@@ -9,20 +9,14 @@ api = Api(cart_v1)
 
 class CartResource(Resource):
     def get(self):
-        try:
-            db = DataBase()
-            response = db.select_all("Carritos")
-            print(response)
-            return response, 200
-        except Exception as e:
-            raise e
-            abort(404, message="No se encontraron elementos")
+        db = DataBase()
+        response = db.select_all("Carritos")
+        return response, 200
 
     def post(self):
         args = arguments.parse_args()
         db = DataBase()
         response = db.insert_element("Carritos", "IdCarrito", **args)
-        print(response)
         return response, 200
 
 

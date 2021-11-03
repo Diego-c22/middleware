@@ -1,4 +1,4 @@
-"""Resources to connect with Compras model"""
+"""Resources to connect to Compras model"""
 from flask import Blueprint
 from db.db import DataBase
 from flask_restful import Resource, Api, abort, reqparse
@@ -9,20 +9,14 @@ api = Api(purchase_v1)
 
 class PurchaseResource(Resource):
     def get(self):
-        try:
-            db = DataBase()
-            response = db.select_all("Compras")
-            print(response)
-            return response, 200
-        except Exception as e:
-            raise e
-            abort(404, message="No se encontraron elementos")
+        db = DataBase()
+        response = db.select_all("Compras")
+        return response, 200
 
     def post(self):
         args = arguments.parse_args()
         db = DataBase()
         response = db.insert_element("Compras", "IdCompra", **args)
-        print(response)
         return response, 200
 
 
