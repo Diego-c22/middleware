@@ -21,7 +21,7 @@ class CartResource(Resource):
     def post(self):
         args = arguments.parse_args()
         db = DataBase()
-        response = db.insert_element("Carritos", "IdCarrito", ** args)
+        response = db.insert_element("Carritos", "IdCarrito", **args)
         print(response)
         return response, 200
 
