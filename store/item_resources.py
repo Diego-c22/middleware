@@ -21,7 +21,7 @@ class ItemResource(Resource):
     def post(self):
         args = arguments.parse_args()
         db = DataBase()
-        response = db.insert_element("Articulos", **args)
+        response = db.insert_element("Articulos", "IdArticulo", ** args)
         return response, 200
 
 

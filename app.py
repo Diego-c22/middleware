@@ -3,6 +3,7 @@ from users.resources import users_v1
 from store.item_resources import items_v1
 from store.solditems_resources import solditems_v1
 from store.purchase_resources import purchase_v1
+from store.cart_resources import cart_v1
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -11,6 +12,7 @@ app.register_blueprint(users_v1)
 app.register_blueprint(items_v1)
 app.register_blueprint(solditems_v1)
 app.register_blueprint(purchase_v1)
+app.register_blueprint(cart_v1)
 
 
 if __name__ == "__main__":

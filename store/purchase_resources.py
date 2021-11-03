@@ -21,7 +21,7 @@ class PurchaseResource(Resource):
     def post(self):
         args = arguments.parse_args()
         db = DataBase()
-        response = db.insert_element("Compras", **args)
+        response = db.insert_element("Compras", "IdCompras" ** args)
         print(response)
         return response, 200
 

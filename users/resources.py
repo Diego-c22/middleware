@@ -24,7 +24,7 @@ class UsersResource(Resource):
 
             db = DataBase()
             print("im inside")
-            r = db.insert_element(table, **args)
+            r = db.insert_element(table, "IdUsuario", **args)
 
             try:
                 return r

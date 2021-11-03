@@ -77,7 +77,7 @@ class DataBase:
         self.connection.close()
         return items
 
-    def insert_element(self, table, **kwargs):
+    def insert_element(self, table, pk, **kwargs):
         print("im in create")
         keys = kwargs.keys()
         values = kwargs.values()
@@ -99,7 +99,7 @@ class DataBase:
 
             id = self.cursor.lastrowid
             self.cursor.execute(
-                f'SELECT * FROM {table} WHERE Id{table[:-1].title()}={id}')
+                f'SELECT * FROM {table} WHERE {pk}={id}')
             item = self.cursor.fetchone()
             self.connection.commit()
             item = decimal_json(item)
