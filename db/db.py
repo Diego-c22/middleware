@@ -2,7 +2,7 @@
 import pymysql
 from pymysql.err import OperationalError
 from common.config import DATABASES
-from utilities.json_serializer import decimal_json_array
+from utilities.json_serializer import decimal_json, decimal_json_array
 
 
 class Attempt:
@@ -61,6 +61,7 @@ class DataBase:
         try:
             self.cursor.execute(sql)
             item = self.cursor.fetchone()
+            item = decimal_json(item)
             print(item)
             return item
         except:
@@ -101,7 +102,7 @@ class DataBase:
                 f'SELECT * FROM {table} WHERE Id{table[:-1].title()}={id}')
             item = self.cursor.fetchone()
             self.connection.commit()
-
+            item = decimal_json(item)
             print(item)
             return item
         except Exception as e:
@@ -126,7 +127,7 @@ class DataBase:
             self.cursor.execute(f'SELECT * FROM {table} WHERE {field}={id}')
             self.connection.commit()
             item = self.cursor.fetchone()
-            print(item)
+            item = decimal_json(item)
             return item
         except Exception as e:
             print(e)
